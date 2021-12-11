@@ -9,3 +9,4 @@ ACM Website revamped
 * [Gowtham Gorrepati](https://github.com/GowthamG30/)
 * [Shiva Reddy](https://github.com/shiva-reddy-1001)
 * Sahil Purohit
+* [Onkar Bartkke](https://github.com/onkarbartakke)
