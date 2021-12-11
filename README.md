@@ -8,4 +8,4 @@ ACM Website revamped
 * [Meet Agrawal](https://github.com/meetagrawal09)
 * [Gowtham Gorrepati](https://github.com/GowthamG30/)
 * [Shiva Reddy](https://github.com/shiva-reddy-1001)
-* [Sahil Purohit]
+* Sahil Purohit
