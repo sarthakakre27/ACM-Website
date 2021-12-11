@@ -10,3 +10,4 @@ ACM Website revamped
 * [Shiva Reddy](https://github.com/shiva-reddy-1001)
 * Sahil Purohit
 * [Onkar Bartkke](https://github.com/onkarbartakke)
+* [Sarthak Akre](https://github.com/sarthakakre27)
