@@ -10,6 +10,9 @@ const JobSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  input: {
+    type: String
+  },
   submittedAt: {
     type: Date,
     default: Date.now,

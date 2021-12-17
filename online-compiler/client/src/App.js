@@ -25,6 +25,7 @@ import "ace-builds/src-noconflict/ext-language_tools";
 function App() {
   const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
+  const [input,setInput] = useState("");
   const [language, setLanguage] = useState("cpp");
   const [langForEditor, setLangForEditor] = useState("c_cpp");
   const [theme, setTheme] = useState("monokai");
@@ -47,6 +48,7 @@ function App() {
     const payload = {
       language,
       code,
+      input,
     };
     try {
       setOutput("");
@@ -218,11 +220,61 @@ function App() {
         height="700px"
       />
       <br />
-      <button onClick={handleSubmit}>Submit</button>
-      <p>{status}</p>
+      <button onClick={handleSubmit} className="submit-btn">Submit Code</button>
+      <AceEditor
+        placeholder="//Input"
+        mode={langForEditor}
+        theme={theme}
+        name="input-box"
+        // onLoad={this.onLoad}
+        value={input}
+        onChange={(input) => {
+          setInput(input);
+        }}
+        fontSize={16}
+        showPrintMargin={true}
+        showGutter={true}
+        highlightActiveLine={true}
+        setOptions={{
+          // enableBasicAutocompletion: true,
+          // enableLiveAutocompletion: true,
+          // enableSnippets: true,
+          showLineNumbers: true,
+          tabSize: 4,
+          useWorker: false,
+        }}
+        width="50%"
+        height="300px"
+      />
+      <AceEditor
+        placeholder="//Output"
+        mode={langForEditor}
+        theme={theme}
+        name="output-box"
+        // onLoad={this.onLoad}
+        // onChange={(code) => {
+        //   setCode(code);
+        // }}
+        value={`Status : ${status === null ? "" : status}\nJobId : ${jobId === null ? "" : jobId}\n${renderTimeDetails()}\nOutput : ${output}`}
+        fontSize={16}
+        showPrintMargin={true}
+        showGutter={true}
+        highlightActiveLine={true}
+        setOptions={{
+          // enableBasicAutocompletion: true,
+          // enableLiveAutocompletion: true,
+          // enableSnippets: true,
+          showLineNumbers: true,
+          tabSize: 4,
+          useWorker: false,
+        }}
+        width="50%"
+        height="300px"
+      />
+      {/* <p>{status}</p>
       <p>{jobId ? `Job ID: ${jobId}` : ""}</p>
       <p>{renderTimeDetails()}</p>
-      <p>{output}</p>
+      <p>{output}</p> */}
     </div>
   );
 }
