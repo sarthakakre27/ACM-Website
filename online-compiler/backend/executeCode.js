@@ -70,9 +70,7 @@ const executeCode = (filepath, input, language) => {
     });
 
     childProcess.stderr.on("data", (data) => {
-      console.log("in stderr");
-      console.log(data.toString());
-      reject(data.toString());
+      reject(data.toString().replaceAll(filepath, "In Your Code"));
     });
 
     childProcess.on("close", (data) => {

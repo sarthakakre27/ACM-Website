@@ -25,7 +25,7 @@ import "ace-builds/src-noconflict/ext-language_tools";
 function App() {
   const [code, setCode] = useState("");
   const [output, setOutput] = useState("");
-  const [input,setInput] = useState("");
+  const [input, setInput] = useState("");
   const [language, setLanguage] = useState("cpp");
   const [langForEditor, setLangForEditor] = useState("c_cpp");
   const [theme, setTheme] = useState("monokai");
@@ -77,7 +77,15 @@ function App() {
             setStatus(jobStatus);
             setJobDetails(job);
             if (jobStatus === "pending") return;
-            setOutput(jobOutput);
+            jobStatus === "error"
+              ? setOutput(
+                  `\\033[94m` +
+                    jobOutput
+                      .substring(1, jobOutput.length - 1)
+                      .replaceAll(/\\n\s+/g, "\n          ") +
+                    `\\033[0m`
+                )
+              : setOutput(jobOutput);
             clearInterval(pollInterval);
           } else {
             console.error(error);
@@ -220,7 +228,9 @@ function App() {
         height="700px"
       />
       <br />
-      <button onClick={handleSubmit} className="submit-btn">Submit Code</button>
+      <button onClick={handleSubmit} className="submit-btn">
+        Submit Code
+      </button>
       <AceEditor
         placeholder="//Input"
         mode={langForEditor}
@@ -248,14 +258,16 @@ function App() {
       />
       <AceEditor
         placeholder="//Output"
-        mode={langForEditor}
+        mode={"python"}
         theme={theme}
         name="output-box"
         // onLoad={this.onLoad}
         // onChange={(code) => {
         //   setCode(code);
         // }}
-        value={`Status : ${status === null ? "" : status}\nJobId : ${jobId === null ? "" : jobId}\n${renderTimeDetails()}\nOutput : ${output}`}
+        value={`Status : ${status === null ? "" : status}\nJobId : ${
+          jobId === null ? "" : jobId
+        }\n${renderTimeDetails()}\nOutput : ${output}`}
         fontSize={16}
         showPrintMargin={true}
         showGutter={true}
