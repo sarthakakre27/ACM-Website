@@ -18,8 +18,7 @@ import "brace/theme/eclipse";
 import "brace/theme/terminal";
 import "brace/theme/twilight";
 import "brace/theme/github";
-// import "ace-builds/src-noconflict/mode-javascript";
-// import "ace-builds/src-noconflict/theme-monokai";
+
 import "ace-builds/src-noconflict/ext-language_tools";
 
 function App() {
@@ -79,11 +78,9 @@ function App() {
             if (jobStatus === "pending") return;
             jobStatus === "error"
               ? setOutput(
-                  `\\033[94m` +
-                    jobOutput
-                      .substring(1, jobOutput.length - 1)
-                      .replaceAll(/\\n\s+/g, "\n          ") +
-                    `\\033[0m`
+                  jobOutput
+                    .substring(1, jobOutput.length - 1)
+                    .replaceAll(/\\r\\n\s*/g, "\n         ")
                 )
               : setOutput(jobOutput);
             clearInterval(pollInterval);
@@ -195,24 +192,14 @@ function App() {
         <button onClick={setDefaultLanguage}>Set Default</button>
       </div>
       <br />
-      {/* <textarea
-        rows="20"
-        cols="75"
-        value={code}
-        onChange={(e) => {
-          setCode(e.target.value);
-        }}
-      ></textarea> */}
       <AceEditor
         placeholder="//Your Code Here"
-        mode={langForEditor} //"javascript"
+        mode={langForEditor}
         theme={theme}
         name="blah2"
-        // onLoad={this.onLoad}
         onChange={(code) => {
           setCode(code);
         }}
-        // value={code}
         fontSize={16}
         showPrintMargin={true}
         showGutter={true}
@@ -236,7 +223,6 @@ function App() {
         mode={langForEditor}
         theme={theme}
         name="input-box"
-        // onLoad={this.onLoad}
         value={input}
         onChange={(input) => {
           setInput(input);
@@ -246,9 +232,6 @@ function App() {
         showGutter={true}
         highlightActiveLine={true}
         setOptions={{
-          // enableBasicAutocompletion: true,
-          // enableLiveAutocompletion: true,
-          // enableSnippets: true,
           showLineNumbers: true,
           tabSize: 4,
           useWorker: false,
@@ -258,13 +241,8 @@ function App() {
       />
       <AceEditor
         placeholder="//Output"
-        mode={"python"}
         theme={theme}
         name="output-box"
-        // onLoad={this.onLoad}
-        // onChange={(code) => {
-        //   setCode(code);
-        // }}
         value={`Status : ${status === null ? "" : status}\nJobId : ${
           jobId === null ? "" : jobId
         }\n${renderTimeDetails()}\nOutput : ${output}`}
@@ -273,20 +251,15 @@ function App() {
         showGutter={true}
         highlightActiveLine={true}
         setOptions={{
-          // enableBasicAutocompletion: true,
-          // enableLiveAutocompletion: true,
-          // enableSnippets: true,
           showLineNumbers: true,
           tabSize: 4,
           useWorker: false,
+          readOnly: true,
         }}
         width="50%"
         height="300px"
+        editorProps={{ readOnly: true }}
       />
-      {/* <p>{status}</p>
-      <p>{jobId ? `Job ID: ${jobId}` : ""}</p>
-      <p>{renderTimeDetails()}</p>
-      <p>{output}</p> */}
     </div>
   );
 }
