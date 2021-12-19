@@ -256,7 +256,6 @@ function App() {
                 setCode(code);
               }}
               fontSize={18}
-              showPrintMargin={false}
               showGutter={true}
               highlightActiveLine={true}
               setOptions={{

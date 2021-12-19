@@ -17,6 +17,7 @@ const executeCode = (filepath, input, language) => {
     var commands = {};
     let Data = "";
     const timeout = 1000;
+    let isDetached = true;
 
     if (input[-1] !== "\n") {
       input += "\n";
@@ -52,6 +53,7 @@ const executeCode = (filepath, input, language) => {
 
     if (os.platform() === "win32") {
       commands = { ...commandsWindows };
+      isDetached = false;
     } else {
       commands = { ...commandsLinux };
     }
@@ -59,13 +61,18 @@ const executeCode = (filepath, input, language) => {
     const childProcess = spawn(commands[language][0], commands[language][1], {
       shell: true,
       timeout: timeout,
-      detached: true,
+      detached: isDetached,
     });
+    console.log(childProcess.pid);
 
     var KillTimer = setTimeout(() => {
       try {
         console.log("Timeout Reached, trying to kill ChildProcess");
         process.kill(-childProcess.pid, "SIGKILL");
+        // spawn("taskkill", ["/pid", childProcess.pid, '/f', '/t']);
+        // console.log(childProcess.pid);
+        // spawn("taskkill", ["/F","/PID",childProcess.pid]);
+        // childProcess.kill();
       } catch (e) {
         console.log("Cannot kill process");
       }
@@ -74,9 +81,9 @@ const executeCode = (filepath, input, language) => {
     childProcess.stdin.write(`${input}`);
 
     childProcess.stdout.on("data", (data) => {
-      //   console.log("in stdout");
-      //   console.log(`${data}`);
-      Data += data;
+        // console.log("in stdout");
+        // console.log(`${data}`);
+        Data += data;
     });
 
     childProcess.stderr.on("data", (data) => {
