@@ -27,7 +27,7 @@ function App() {
   const [input, setInput] = useState("");
   const [language, setLanguage] = useState("cpp");
   const [langForEditor, setLangForEditor] = useState("c_cpp");
-  const [theme, setTheme] = useState("monokai");
+  const [theme, setTheme] = useState("terminal");
   const [jobId, setJobId] = useState(null);
   const [status, setStatus] = useState(null);
   const [jobDetails, setJobDetails] = useState(null);
