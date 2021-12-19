@@ -33,20 +33,16 @@
   }
 }
 
-#blah2{
-  /* code editor css */
-}
-
-#input-box{
+#input-box {
   display: inline-block;
 }
 
-#output-box{
+#output-box {
   display: inline-block;
 }
 
-.submit-btn{
+.submit-btn {
   display: block;
   margin: auto;
-  margin-bottom: 15px;;
+  margin-bottom: 15px;
 }

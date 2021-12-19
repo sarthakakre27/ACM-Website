@@ -16,7 +16,7 @@ const executeCode = (filepath, input, language) => {
 
     var commands = {};
     let Data = "";
-    const timeout = 2000;
+    const timeout = 1000;
 
     if (input[-1] !== "\n") {
       input += "\n";
@@ -59,13 +59,23 @@ const executeCode = (filepath, input, language) => {
     const childProcess = spawn(commands[language][0], commands[language][1], {
       shell: true,
       timeout: timeout,
+      detached: true,
     });
+
+    var KillTimer = setTimeout(() => {
+      try {
+        console.log("Timeout Reached, trying to kill ChildProcess");
+        process.kill(-childProcess.pid, "SIGKILL");
+      } catch (e) {
+        console.log("Cannot kill process");
+      }
+    }, timeout);
 
     childProcess.stdin.write(`${input}`);
 
     childProcess.stdout.on("data", (data) => {
       //   console.log("in stdout");
-      console.log(`${data}`);
+      //   console.log(`${data}`);
       Data += data;
     });
 
@@ -73,8 +83,13 @@ const executeCode = (filepath, input, language) => {
       reject(data.toString().replaceAll(filepath, "In Your Code"));
     });
 
+    childProcess.on("exit", () => {
+      console.log("Exited Process, KillTimer cleared");
+      clearTimeout(KillTimer);
+    });
+
     childProcess.on("close", (data) => {
-      console.log("in close" + "," + `${data}`);
+      console.log("Process Closed with code" + ": " + `${data}`);
       resolve(Data);
     });
   });
