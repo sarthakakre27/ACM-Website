@@ -129,6 +129,10 @@ function App() {
     console.log(`${language} set as default!`);
   };
 
+  const handleClearInput = (event) => {
+    setInput("");
+  }
+
   const renderTimeDetails = () => {
     if (!jobDetails) {
       return "";
@@ -178,21 +182,6 @@ function App() {
                   value={theme}
                   onChange={(e) => {
                     setTheme(e.target.value);
-                    if (e.target.value === "dracula") {
-                      setTheme("dracula");
-                    } else if (e.target.value === "github") {
-                      setTheme("github");
-                    } else if (e.target.value === "xcode") {
-                      setTheme("xcode");
-                    } else if (e.target.value === "twilight") {
-                      setTheme("twilight");
-                    } else if (e.target.value === "eclipse") {
-                      setTheme("eclipse");
-                    } else if (e.target.value === "terminal") {
-                      setTheme("terminal");
-                    } else if (e.target.value === "monokai") {
-                      setTheme("monokai");
-                    }
                   }}
                 >
                   <MenuItem value="monokai">monokai</MenuItem>
@@ -212,6 +201,7 @@ function App() {
                       "Are you sure you want to change language? WARNING: Your current code will be lost."
                     );
                     if (shouldSwitch) {
+                      // console.log("here");
                       setLanguage(e.target.value);
                       if (e.target.value === "py") {
                         setLangForEditor("python");
@@ -225,6 +215,8 @@ function App() {
                       } else if (e.target.value === "java") {
                         setLangForEditor("java");
                       }
+                      setCode(""); //
+                      console.log("here");
                     }
                   }}
                 >
@@ -279,7 +271,7 @@ function App() {
                 gap: "20px",
               }}
             >
-              <Button onClick={handleSubmit} variant="contained" size="medium">
+              <Button onClick={handleClearInput} variant="contained" size="medium">
                 Clear Input
               </Button>
             </Box>
@@ -316,7 +308,7 @@ function App() {
                 name="output-box"
                 value={`Status : ${status === null ? "" : status}\nJobId : ${
                   jobId === null ? "" : jobId
-                }\n${renderTimeDetails()}\nOutput : ${output}`}
+                }\n${renderTimeDetails()}\nOutput : \n${output}`}
                 fontSize={18}
                 showPrintMargin={false}
                 showGutter={true}
