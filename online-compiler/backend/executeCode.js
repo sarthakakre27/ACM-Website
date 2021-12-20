@@ -63,7 +63,7 @@ const executeCode = (filepath, input, language) => {
       timeout: timeout,
       detached: isDetached,
     });
-    console.log(childProcess.pid);
+    // console.log(childProcess.pid);
 
     var KillTimer = setTimeout(() => {
       try {
@@ -81,9 +81,9 @@ const executeCode = (filepath, input, language) => {
     childProcess.stdin.write(`${input}`);
 
     childProcess.stdout.on("data", (data) => {
-        // console.log("in stdout");
-        // console.log(`${data}`);
-        Data += data;
+      // console.log("in stdout");
+      // console.log(`${data}`);
+      Data += data;
     });
 
     childProcess.stderr.on("data", (data) => {
