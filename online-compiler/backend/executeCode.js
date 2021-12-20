@@ -61,7 +61,7 @@ const executeCode = (filepath, input, language) => {
     const childProcess = spawn(commands[language][0], commands[language][1], {
       shell: true,
       timeout: timeout,
-      detached: isDetached,
+      // detached: false,
     });
     // console.log(childProcess.pid);
 
