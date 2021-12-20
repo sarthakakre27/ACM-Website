@@ -33,6 +33,16 @@
   }
 }
 
-#blah2{
-  width: 100%;
+#input-box {
+  display: inline-block;
+}
+
+#output-box {
+  display: inline-block;
+}
+
+.submit-btn {
+  display: block;
+  margin: auto;
+  margin-bottom: 15px;
 }
