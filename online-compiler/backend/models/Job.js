@@ -31,6 +31,9 @@ const JobSchema = mongoose.Schema({
   output: {
     type: String,
   },
+  probID: {
+    type: mongoose.Types.ObjectId,
+  }
 });
 
 // default export

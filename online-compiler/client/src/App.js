@@ -68,6 +68,7 @@ function App() {
       language,
       code,
       input,
+      probID: "61c45dd183b0fc33d00a3c1a",
     };
     try {
       setOutput("");
@@ -167,7 +168,7 @@ function App() {
       </Typography>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing="0.2vh">
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={7}>
             <Box
               display="flex"
               justifyContent="center"
@@ -261,7 +262,7 @@ function App() {
               height="100.2vh"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={5}>
             <Box
               display="flex"
               justifyContent="center"

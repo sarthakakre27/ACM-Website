@@ -16,7 +16,7 @@ const executeCode = (filepath, input, language) => {
 
     var commands = {};
     let Data = "";
-    const timeout = 1000;
+    const timeout = 3000;
     let isDetached = true;
 
     if (input[-1] !== "\n") {
@@ -61,7 +61,7 @@ const executeCode = (filepath, input, language) => {
     const childProcess = spawn(commands[language][0], commands[language][1], {
       shell: true,
       timeout: timeout,
-      // detached: false,
+      detached: isDetached,
     });
     // console.log(childProcess.pid);
 
@@ -97,6 +97,7 @@ const executeCode = (filepath, input, language) => {
 
     childProcess.on("close", (data) => {
       console.log("Process Closed with code" + ": " + `${data}`);
+      // console.log(Data);
       resolve(Data);
     });
   });
