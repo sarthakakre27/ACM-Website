@@ -68,8 +68,8 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
 
         await job.save();
 
-        // fs.unlinkSync(job.filepath); //delete the code file on the server
-        // fs.rmSync(folderPath, {recursive: true, force: true});
+        fs.unlinkSync(job.filepath); //delete the code file on the server
+        fs.rmSync(folderPath, {recursive: true, force: true});
 
         if (job.language === "cpp" || job.language === "c") {
             const jobId = path.basename(job.filepath).split(".")[0];
@@ -85,6 +85,7 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
         await job.save();
 
         fs.unlinkSync(job.filepath); //delete the code file on the server
+        fs.rmSync(folderPath, {recursive: true, force: true});
 
         throw Error(JSON.stringify(err));
     }

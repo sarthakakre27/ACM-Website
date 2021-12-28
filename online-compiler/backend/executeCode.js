@@ -9,7 +9,6 @@ const executeCode = (filepath, input, language, memory) => {
     return new Promise((resolve, reject) => {
         const outputPath = path.dirname(filepath).split(".")[0];
         const jobId = path.basename(filepath).split(".")[0];
-        const executable = path.join(outputPath, `${jobId}.out`);
 
         let memoryLimit = memory;
         let Data = "";
@@ -19,38 +18,21 @@ const executeCode = (filepath, input, language, memory) => {
         }
 
         const commands = {
-            // cpp: [
-            //     "ulimit",
-            //     [
-            //         "-Sv",
-            //         `${memoryLimit};`,
-            //         "g++",
-            //         filepath,
-            //         "-o",
-            //         executable,
-            //         `&& cd ${outputPath} && time ./${jobId}.out`,
-            //     ],
-            // ],
             cpp: [
-                `"${outputPath}":/code  --memory="70m"  compiler_image /bin/bash -c 'cd /code && ulimit -Sv 100000 && g++ ${jobId}.cpp -o /code/a.out && time ./a.out -< $"/code/inputFile"'`,
+                `"${outputPath}":/code compiler_image /bin/bash -c 'cd /code && ulimit -Sv ${memoryLimit} && g++ ${jobId}.cpp -o /code/a.out && time ./a.out -< $"/code/inputFile"'`,
             ],
             py: [
-                `"${outputPath}":/code  --memory="70m"  compiler_image /bin/bash -c 'cd /code && ulimit -Sv 100000 &&  time  python3 -u ${jobId}.py -< $"/code/inputFile"'`,
+                `"${outputPath}":/code compiler_image /bin/bash -c 'cd /code && ulimit -Sv ${memoryLimit} &&  time  python3 -u ${jobId}.py -< $"/code/inputFile"'`,
             ],
-            // c: [
-            //     "ulimit",
-            //     [
-            //         "-Sv",
-            //         `${memoryLimit};`,
-            //         "gcc",
-            //         filepath,
-            //         "-o",
-            //         executable,
-            //         `&& cd ${outputPath} && time ./${jobId}.out`,
-            //     ],
-            // ],
-            // java: ["ulimit", ["-Sv", `${memoryLimit};`, "time", "java", filepath]],
-            // js: ["ulimit", ["-Sv", `${memoryLimit};`, "time", "node", filepath]],
+            c: [
+                `"${outputPath}":/code compiler_image /bin/bash -c 'cd /code && ulimit -Sv ${memoryLimit} && gcc ${jobId}.c -o /code/a.out && time ./a.out -< $"/code/inputFile"'`,
+            ],
+            java: [
+                `"${outputPath}":/code compiler_image /bin/bash -c 'cd /code && ulimit -Sv ${memoryLimit} &&  time  java ${jobId}.java -< $"/code/inputFile"'`,
+            ],
+            js: [
+                `"${outputPath}":/code compiler_image /bin/bash -c 'cd /code && ulimit -Sv ${memoryLimit} &&  time  node ${jobId}.js -< $"/code/inputFile"'`,
+            ],
         };
 
         const childProcess = spawn("./dockerRun.sh", commands[language], {
