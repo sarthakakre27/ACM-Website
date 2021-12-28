@@ -36,7 +36,7 @@ app.post("/run", async (req, res) => {
     //probID === -1 submit with no particular question, just simple code execution
 
     // need to generate a c++ file with content from the request
-    const filepath = await generateFile(language, code);
+    const {filepath, folderPath} = await generateFile(language, code, input);
     // write into DB
     // console.log(input);
     const job = await new Job({language, filepath, input, probID}).save();

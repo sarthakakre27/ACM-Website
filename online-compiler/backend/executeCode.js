@@ -3,16 +3,11 @@ const fs = require("fs");
 const path = require("path");
 const os = require("os");
 
-const outputPath = path.join(__dirname, "outputs");
-
-if (!fs.existsSync(outputPath)) {
-    fs.mkdirSync(outputPath, {recursive: true});
-}
-
-const timeout = 5000;
+const timeout = 10000;
 
 const executeCode = (filepath, input, language, memory) => {
     return new Promise((resolve, reject) => {
+        const outputPath = path.dirname(filepath).split(".")[0];
         const jobId = path.basename(filepath).split(".")[0];
         const executable = path.join(outputPath, `${jobId}.out`);
 
@@ -24,49 +19,45 @@ const executeCode = (filepath, input, language, memory) => {
         }
 
         const commands = {
+            // cpp: [
+            //     "ulimit",
+            //     [
+            //         "-Sv",
+            //         `${memoryLimit};`,
+            //         "g++",
+            //         filepath,
+            //         "-o",
+            //         executable,
+            //         `&& cd ${outputPath} && time ./${jobId}.out`,
+            //     ],
+            // ],
             cpp: [
-                "ulimit",
-                [
-                    "-Sv",
-                    `${memoryLimit};`,
-                    "g++",
-                    filepath,
-                    "-o",
-                    executable,
-                    `&& cd ${outputPath} && time ./${jobId}.out`,
-                ],
+                `"${outputPath}":/code  --memory="70m"  compiler_image /bin/bash -c 'cd /code && ulimit -Sv 100000 && g++ ${jobId}.cpp -o /code/a.out && time ./a.out -< $"/code/inputFile"'`,
             ],
-            py: ["ulimit", ["-Sv", `${memoryLimit};`, "time", "python3", filepath]],
-            c: [
-                "ulimit",
-                [
-                    "-Sv",
-                    `${memoryLimit};`,
-                    "gcc",
-                    filepath,
-                    "-o",
-                    executable,
-                    `&& cd ${outputPath} && time ./${jobId}.out`,
-                ],
+            py: [
+                `"${outputPath}":/code  --memory="70m"  compiler_image /bin/bash -c 'cd /code && ulimit -Sv 100000 &&  time  python3 -u ${jobId}.py -< $"/code/inputFile"'`,
             ],
-            java: ["ulimit", ["-Sv", `${memoryLimit};`, "time", "java", filepath]],
-            js: ["ulimit", ["-Sv", `${memoryLimit};`, "time", "node", filepath]],
+            // c: [
+            //     "ulimit",
+            //     [
+            //         "-Sv",
+            //         `${memoryLimit};`,
+            //         "gcc",
+            //         filepath,
+            //         "-o",
+            //         executable,
+            //         `&& cd ${outputPath} && time ./${jobId}.out`,
+            //     ],
+            // ],
+            // java: ["ulimit", ["-Sv", `${memoryLimit};`, "time", "java", filepath]],
+            // js: ["ulimit", ["-Sv", `${memoryLimit};`, "time", "node", filepath]],
         };
 
-        const childProcess = spawn(commands[language][0], commands[language][1], {
+        const childProcess = spawn("./dockerRun.sh", commands[language], {
             shell: "/bin/bash",
             timeout: timeout,
             detached: true,
         });
-
-        var KillTimer = setTimeout(() => {
-            try {
-                console.log("Timeout Reached, trying to kill ChildProcess");
-                process.kill(-childProcess.pid, "SIGKILL");
-            } catch (e) {
-                console.log("Cannot kill process");
-            }
-        }, timeout);
 
         childProcess.stdin.write(`${input}`);
 
@@ -82,23 +73,25 @@ const executeCode = (filepath, input, language, memory) => {
             Data += data.toString();
         });
 
-        childProcess.on("exit", () => {
-            console.log("Exited Process, KillTimer cleared");
-            clearTimeout(KillTimer);
-        });
-
         childProcess.on("close", data => {
             console.log("Process Closed with code" + ": " + `${data}`);
-            console.log(Data);
+            // console.log(Data);
             if (data === 0) {
                 let timeregex = /real\s*(\d+)m(\d+.\d\d\d)s/gm;
                 const time = timeregex.exec(Data);
                 const execTime = (time[1] * 60 + time[2]) * 1000;
-                Data = Data.replaceAll(/\nreal\s*\dm\d.\d\d\ds\nuser\s*\dm\d.\d\d\ds\nsys\s*\dm\d.\d\d\ds\n/gm, "");
+                Data = Data.replaceAll(
+                    /\s*real\s*\dm\d\.\d\d\ds\s*user\s*\dm\d\.\d\d\ds\s*sys\s*\dm\d\.\d\d\ds\s*/gm,
+                    ""
+                );
                 const DataObj = {result: Data, execTime: execTime};
+                // console.log(DataObj);
                 resolve(DataObj);
             } else {
-                Data = Data.replaceAll(/\nreal\s*\dm\d.\d\d\ds\nuser\s*\dm\d.\d\d\ds\nsys\s*\dm\d.\d\d\ds\n/gm, "");
+                Data = Data.replaceAll(
+                    /\s*real\s*\dm\d\.\d\d\ds\s*user\s*\dm\d\.\d\d\ds\s*sys\s*\dm\d\.\d\d\ds\s*/gm,
+                    ""
+                );
                 reject(Data.replaceAll(filepath, "In Your Code"));
             }
         });

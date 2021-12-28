@@ -26,6 +26,7 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
         throw Error(`cannot find Job with id ${jobId}`);
     }
     try {
+        const folderPath = path.dirname(job.filepath).split(".")[0];
         if (job.probID != undefined) {
             const problem = await Problem.findById(mongoose.Types.ObjectId(job.probID));
             for (let i = 0; i < problem.testCases.length; i++) {
@@ -67,12 +68,13 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
 
         await job.save();
 
-        fs.unlinkSync(job.filepath); //delete the code file on the server
+        // fs.unlinkSync(job.filepath); //delete the code file on the server
+        // fs.rmSync(folderPath, {recursive: true, force: true});
 
         if (job.language === "cpp" || job.language === "c") {
             const jobId = path.basename(job.filepath).split(".")[0];
             const executable = path.join(outputPath, `${jobId}.out`);
-            fs.unlinkSync(executable); //delete the executable file file on the server
+            // fs.unlinkSync(executable); //delete the executable file file on the server
         }
 
         return true;
