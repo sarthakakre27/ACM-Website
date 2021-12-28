@@ -1,0 +1,37 @@
+FROM ubuntu:20.04
+WORKDIR /usr/app
+
+# Install Python3.9
+RUN echo "Installing Python3.9 Step1"
+RUN apt-get update && apt-get install -y software-properties-common gcc
+#RUN apt-get update && apt-get install -y python3-9 python3-distutils python3-pip python3-apt
+
+RUN echo "Installing Python3.9 Step2"
+RUN apt-get update
+RUN apt-get install software-properties-common
+RUN add-apt-repository ppa:deadsnakes/ppa
+
+RUN echo "Installing Python3.9 Step3"
+# Install py39 from deadsnakes repository
+RUN apt-get install -y python3.9
+# Install pip from standard ubuntu packages
+RUN apt-get install -y python3-pip
+
+# Install C/C++ Compilers
+RUN apt-get install -y gcc
+RUN apt-get install -y g++
+
+# Install Node.js and NPM
+RUN apt-get -y install curl gnupg
+RUN curl -sL https://deb.nodesource.com/setup_16.x  | bash -
+RUN apt-get -y install nodejs
+# confirm that it was successful 
+RUN node -v
+# npm installs automatically 
+RUN npm -v
+
+# Install OpenJDK-8
+RUN apt-get install -y default-jdk
+RUN apt update
+RUN apt-get install -y  default-jre
+RUN java --version
