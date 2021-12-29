@@ -10,7 +10,7 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 echo "Creating Docker Image"
-docker build -t 'compiler_image' - < Dockerfile
+docker build -t 'compiler_image' - < smaller.Dockerfile
 echo "Retrieving Installed Docker Images"
 docker images
 

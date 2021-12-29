@@ -11,7 +11,7 @@ const {Mongoose} = require("mongoose");
 
 const jobQueue = new Queue("job-runner-queue");
 const NUM_WORKERS = 5;
-const DEFAULT_MEM_LIMIT = 700000; // 700MB by default, unless overruled by problem
+const DEFAULT_MEM_LIMIT = 70000000; // 700MB by default, unless overruled by problem
 
 jobQueue.process(NUM_WORKERS, async ({data}) => {
     const jobId = data.id;
@@ -69,6 +69,7 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
         await job.save();
 
         fs.unlinkSync(job.filepath); //delete the code file on the server
+        fs.unlinkSync(path.join(path.dirname(job.filepath), "inputFile"));
         fs.rmSync(folderPath, {recursive: true, force: true});
 
         if (job.language === "cpp" || job.language === "c") {
@@ -85,6 +86,7 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
         await job.save();
 
         fs.unlinkSync(job.filepath); //delete the code file on the server
+        fs.unlinkSync(path.join(path.dirname(job.filepath), "inputFile"));
         fs.rmSync(folderPath, {recursive: true, force: true});
 
         throw Error(JSON.stringify(err));
