@@ -1,0 +1,8 @@
+GET http://localhost:8000/api/problems/get-problems
+
+
+###
+GET http://localhost:8000/api/problems/problem-details/61d1937fcf31d4a4d2a890cf
+
+
+###
