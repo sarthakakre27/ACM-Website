@@ -16,6 +16,7 @@ db.once('open',()=>console.log('Connected to Database'))
 // for json
 app.use(express.json())
 
-// app.use('/api/auth',require('./routes/api/auth'))  -- points to the relevant api
+app.use('/api/problems',require('./routes/api/problem'))
+
 
 app.listen(8000,()=>console.log('Server Started'))
