@@ -9,16 +9,17 @@ echo \
 sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
+sudo service docker start 
+sudo chmod 777 $PWD/dockerRun.sh
+sudo chmod 666 /var/run/docker.sock
+sudo service docker restart
+sudo groupadd docker
+sudo usermod -aG docker $USER
+
 echo "Creating Docker Image"
 docker build -t 'compiler_image' - < smaller.Dockerfile
 echo "Retrieving Installed Docker Images"
 docker images
 
-sudo chmod 777 $PWD/dockerRun.sh
-sudo chmod 666 /var/run/docker.sock
-sudo systemctl restart docker
-
-sudo groupadd docker
-sudo usermod -aG docker $USER
 
 echo -e "\e[1;31m Please Logout and Login again \e[0m"
