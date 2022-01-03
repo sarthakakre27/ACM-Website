@@ -75,14 +75,14 @@ function OnlineCompiler() {
             setStatus(null);
             setJobId(null);
             setJobDetails(null);
-            const {data} = await axios.post("http://localhost:5000/run", payload);
+            const {data} = await axios.post("http://localhost:8000/api/compiler/run", payload);
             if (data.jobId) {
                 setJobId(data.jobId);
                 setStatus("Submitted.");
 
                 // poll here
                 pollInterval = setInterval(async () => {
-                    const {data: statusRes} = await axios.get(`http://localhost:5000/status`, {
+                    const {data: statusRes} = await axios.get(`http://localhost:8000/api/compiler/status`, {
                         params: {
                             id: data.jobId,
                         },

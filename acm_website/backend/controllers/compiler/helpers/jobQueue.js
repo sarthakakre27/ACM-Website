@@ -14,6 +14,7 @@ const NUM_WORKERS = 5;
 const DEFAULT_MEM_LIMIT = 70000000; // 700MB by default, unless overruled by problem
 
 jobQueue.process(NUM_WORKERS, async ({data}) => {
+    console.log("called executor...");
     const jobId = data.id;
     const job = await Job.findById(jobId);
     const outputPath = path.join(__dirname, "outputs");

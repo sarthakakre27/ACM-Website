@@ -10,7 +10,7 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io
 
 sudo service docker start 
-sudo chmod 777 $PWD/dockerRun.sh
+sudo chmod 777 ../../controllers/compiler/helpers/dockerRun.sh
 sudo chmod 666 /var/run/docker.sock
 sudo service docker restart
 sudo groupadd docker

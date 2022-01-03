@@ -6,6 +6,7 @@ const {addJobToQueue} = require("./helpers/jobQueue");
 const Job = require("../../models/jobModel");
 
 const runCode = async (req, res) => {
+    // console.log("Geeting it");
     const {language = "cpp", code, input = "", probID} = req.body;
     if (code === undefined) {
         return res.status(400).json({success: false, error: "Empty code body!"});

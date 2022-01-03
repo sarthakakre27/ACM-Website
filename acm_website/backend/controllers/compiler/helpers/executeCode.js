@@ -34,8 +34,9 @@ const executeCode = (filepath, input, language, memory) => {
                 `"${outputPath}":/code compiler_image /bin/bash -c 'cd /code && ulimit -Sv ${memoryLimit} &&  time  node ${jobId}.js -< $"/code/inputFile"'`,
             ],
         };
+        const dockerScriptPath = path.join(__dirname, "./dockerRun.sh");
 
-        const childProcess = spawn("./dockerRun.sh", commands[language], {
+        const childProcess = spawn(dockerScriptPath, commands[language], {
             shell: "/bin/bash",
             timeout: timeout,
             detached: true,
