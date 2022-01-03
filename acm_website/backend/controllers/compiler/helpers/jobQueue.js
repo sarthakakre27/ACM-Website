@@ -4,8 +4,8 @@ const Queue = require("bull");
 const mongoose = require("mongoose");
 const outputs = path.join(__dirname, "outputs");
 
-const Job = require("./models/Job");
-const Problem = require("./models/Problem");
+const Job = require("../../../models/jobModel");
+const Problem = require("../../../models/problemModel");
 const {executeCode} = require("./executeCode");
 const {Mongoose} = require("mongoose");
 

@@ -1,37 +1,14 @@
-const express = require('express')
-const router = express.Router()
-const Problem = require('../../models/Problem')
+const express = require("express");
+const router = express.Router();
+const Problem = require("../models/problemModel");
+const problemController = "../controllers/problems/problemController";
+const {getProblemDetails, getProblemName} = require(problemController);
 
-const auth = require('../../middleware/auth')
+const auth = require("../middleware/auth");
 
+router.get("/get-problems", getProblemName);
 
-router.get('/get-problems',async(req,res)=>{
-
-    try{
-
-        projection_doc={name:1,_id :1}
-        const problems = await Problem.find({},projection_doc)
-
-        res.json(problems)
-    }catch(err){
-        res.status(500).json({ message:err.message })
-    }
-})
-
-
-router.get('/problem-details/:id',async(req,res)=>{
-    try{
-        const problem = await Problem.find({
-            user_id : req.params.id
-          })
-        res.json(problem)
-    }catch(err){
-        res.status(500).json({ message:err.message })
-    }
-})
-
-
-
+router.get("/problem-details/:id", getProblemDetails);
 
 // post a question
 
@@ -68,6 +45,4 @@ let p1 = new Problem({
 
 p1.save();
 
-
-
-module.exports = router
+module.exports = router;
