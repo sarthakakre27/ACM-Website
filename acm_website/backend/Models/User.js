@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const passportLocalMongoose = require("passport-local-mongoose");
-require('dotenv').config();
+// require('dotenv').config();
 
-// Connect to mongoDB atlas
-mongoose.connect(process.env.PASSPORT_MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
+// // Connect to mongoDB atlas
+// mongoose.connect(process.env.PASSPORT_MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const userSchema = new mongoose.Schema({
 	username: String,

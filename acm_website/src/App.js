@@ -1,5 +1,4 @@
-import RoutesList from "./RoutesList";
-import LoginPage from "./LoginPage";
+import RoutesList from "./Components/RoutesList";
 
 function App() {
   return (
