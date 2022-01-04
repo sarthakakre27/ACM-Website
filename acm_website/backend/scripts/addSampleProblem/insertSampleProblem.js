@@ -1,39 +1,18 @@
-const express = require('express')
-const router = express.Router()
-const Problem = require('../../models/Problem')
+require("dotenv").config();
+const mongoose = require("mongoose");
+const Problem = require("./models/Problem");
 
-const auth = require('../../middleware/auth')
-
-
-router.get('/get-problems',async(req,res)=>{
-
-    try{
-
-        projection_doc={name:1,_id :1}
-        const problems = await Problem.find({},projection_doc)
-
-        res.json(problems)
-    }catch(err){
-        res.status(500).json({ message:err.message })
+mongoose.connect(
+    process.env.DATABASE_URL,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    },
+    err => {
+        err && console.error(err);
+        console.log("Successfully connected to MongoDB: compilerdb");
     }
-})
-
-
-router.get('/problem-details/:id',async(req,res)=>{
-    try{
-        const problem = await Problem.find({
-            user_id : req.params.id
-          })
-        res.json(problem)
-    }catch(err){
-        res.status(500).json({ message:err.message })
-    }
-})
-
-
-
-
-// post a question
+);
 
 let p1 = new Problem({
     name: "missing number",
@@ -67,7 +46,3 @@ let p1 = new Problem({
 });
 
 p1.save();
-
-
-
-module.exports = router
