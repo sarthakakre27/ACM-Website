@@ -10,6 +10,12 @@ const executeCode = (filepath, input, language, memory) => {
         const outputPath = path.dirname(filepath).split(".")[0];
         const jobId = path.basename(filepath).split(".")[0];
 
+        const dirUsercode = path.join(path.resolve(__dirname, "../../../"), `temp/${jobId}`);
+        const inputFileMaker = async (dirUsercode, input) => {
+            await fs.writeFileSync(path.join(dirUsercode, "inputFile"), input);
+        };
+        inputFileMaker(dirUsercode, input);
+
         let memoryLimit = memory;
         let Data = "";
 

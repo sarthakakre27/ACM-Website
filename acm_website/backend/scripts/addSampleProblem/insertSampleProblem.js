@@ -1,9 +1,9 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-const Problem = require("./models/Problem");
+const Problem = require("../../models/problemModel");
 
 mongoose.connect(
-    process.env.DATABASE_URL,
+    "mongodb://localhost:27017/acm-website",
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -15,7 +15,7 @@ mongoose.connect(
 );
 
 let p1 = new Problem({
-    name: "missing number",
+    name: "Ok Numbers",
     statement: "You are given all numbers between 1,2,…,n except one. Your task is to find the missing number.",
     inputStructure:
         "The first input line contains an integer n.The second line contains n−1 numbers. Each number is distinct and between 1 and n (inclusive).",
