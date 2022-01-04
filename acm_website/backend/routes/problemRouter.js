@@ -43,6 +43,6 @@ let p1 = new Problem({
     ],
 });
 
-p1.save();
+// p1.save();
 
 module.exports = router;
