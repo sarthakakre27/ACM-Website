@@ -2,7 +2,7 @@ import axios from "axios";
 // import "./App.css";
 import stubs from "./stubs";
 import React, {useState, useEffect} from "react";
-import {useLocation, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import moment from "moment";
 import AceEditor from "react-ace";
 // import brace from "brace";
@@ -24,25 +24,22 @@ import "ace-builds/src-noconflict/ext-language_tools";
 
 //Styling using MAterial UI
 
-import {styled} from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-// import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 
-const Item = styled(Paper)(({theme}) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: "center",
-    color: theme.palette.text.secondary,
-}));
+// const Item = styled(Paper)(({theme}) => ({
+//     ...theme.typography.body2,
+//     padding: theme.spacing(1),
+//     textAlign: "center",
+//     color: theme.palette.text.secondary,
+// }));
 
 function OnlineCompiler() {
     let params = useParams();
@@ -166,10 +163,7 @@ function OnlineCompiler() {
                 }}>
                 Online Compiler
             </Typography>
-            <Backdrop
-                sx={{color: "#fff", zIndex: theme => theme.zIndex.drawer + 1}}
-                open={isLoading}
-            >
+            <Backdrop sx={{color: "#fff", zIndex: theme => theme.zIndex.drawer + 1}} open={isLoading}>
                 <CircularProgress color="inherit" />
             </Backdrop>
             <Box sx={{flexGrow: 1}}>
