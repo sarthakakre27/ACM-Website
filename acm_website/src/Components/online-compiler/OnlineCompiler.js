@@ -2,7 +2,7 @@ import axios from "axios";
 // import "./App.css";
 import stubs from "./stubs";
 import React, {useState, useEffect} from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import moment from "moment";
 import AceEditor from "react-ace";
 // import brace from "brace";
@@ -43,7 +43,7 @@ const Item = styled(Paper)(({theme}) => ({
 }));
 
 function OnlineCompiler() {
-    let location = useLocation();
+    let params = useParams();
 
     const [code, setCode] = useState("");
     const [output, setOutput] = useState("");
@@ -71,7 +71,7 @@ function OnlineCompiler() {
             language,
             code,
             input,
-            probID: location.id,
+            probID: params.id,
         };
         try {
             setOutput("");
