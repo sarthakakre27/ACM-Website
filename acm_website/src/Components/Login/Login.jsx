@@ -28,7 +28,7 @@ const LoginBox = props => {
             })
             .then(res => {
                 const userName = res.data;
-                window.location.href = "/#/" + userName;
+                window.location.href = "/" + userName;
             })
             .catch(err => {
                 console.log(err);
@@ -50,7 +50,7 @@ const LoginBox = props => {
             })
             .then(res => {
                 // Login successful
-                window.location.href = "/#/" + username;
+                window.location.href = "/" + username;
             })
             .catch(err => setOpenAlert(true));
     };
@@ -71,9 +71,9 @@ const LoginBox = props => {
                     </Button>
                     <p>
                         New User?{" "}
-                        <a onClick={props.register}>
+                        <Button onClick={props.register}>
                             <b>Register</b>
-                        </a>
+                        </Button>
                     </p>
                 </CardContent>
             </Card>

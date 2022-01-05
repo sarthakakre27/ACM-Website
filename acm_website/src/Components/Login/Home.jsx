@@ -3,22 +3,19 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 
 const Home = () => {
-	const handleLogout = () => {
-		axios
-			.get("/api/logout")
-			.then(res => 
-                console.log(res),
-                setTimeout(window.location.href = '/' ,1000),
-
+    const handleLogout = () => {
+        axios
+            .get("/api/logout")
+            .then(
+                res => console.log(res),
+                setTimeout(() => {
+                    window.location.href = "/Login";
+                }, 1000)
             )
-			.catch(err => console.log(err));
-	};
+            .catch(err => console.log(err));
+    };
 
-  return (
-		<Button onClick={handleLogout}>
-			Logout
-		</Button>
-  );
+    return <Button onClick={handleLogout}>Logout</Button>;
 };
 
 export default Home;

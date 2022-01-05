@@ -1,12 +1,8 @@
 import React, {useEffect, useState} from "react";
-import {useLocation, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import OnlineCompiler from "../online-compiler/OnlineCompiler";
-import Loader from "react-loader-spinner";
-import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
 
 function ProblemDetails(props) {
-    let location = useLocation();
     let params = useParams();
 
     const [details, setDetails] = useState({});
@@ -19,7 +15,7 @@ function ProblemDetails(props) {
                 console.log(data);
             })
             .catch(err => console.log(err));
-    }, [location]);
+    }, [params.id]);
 
     return (
         <div>

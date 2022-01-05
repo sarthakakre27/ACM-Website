@@ -71,9 +71,9 @@ const RegisterBox = props => {
                     </Button>
                     <p>
                         Existing User?{" "}
-                        <a onClick={props.login}>
+                        <Button onClick={props.login}>
                             <b>Login</b>
-                        </a>
+                        </Button>
                     </p>
                 </CardContent>
             </Card>
