@@ -12,7 +12,7 @@ const generateFile = async (format, content, input) => {
     const filepath = path.join(dirUsercode, filename);
 
     await fs.writeFileSync(filepath, content);
-    await fs.writeFileSync(path.join(dirUsercode, "inputFile"), input);
+    // await fs.writeFileSync(path.join(dirUsercode, "inputFile"), input);
 
     return {filepath: filepath};
 };

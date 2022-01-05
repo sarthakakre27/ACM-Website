@@ -2,6 +2,7 @@ import axios from "axios";
 // import "./App.css";
 import stubs from "./stubs";
 import React, {useState, useEffect} from "react";
+import {useLocation, useParams} from "react-router-dom";
 import moment from "moment";
 import AceEditor from "react-ace";
 // import brace from "brace";
@@ -33,6 +34,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 // import InputLabel from "@mui/material/InputLabel";
 import Typography from "@mui/material/Typography";
+import Backdrop from "@mui/material/Backdrop";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Item = styled(Paper)(({theme}) => ({
     ...theme.typography.body2,
@@ -42,6 +45,8 @@ const Item = styled(Paper)(({theme}) => ({
 }));
 
 function OnlineCompiler() {
+    let params = useParams();
+
     const [code, setCode] = useState("");
     const [output, setOutput] = useState("");
     const [input, setInput] = useState("");
@@ -51,6 +56,7 @@ function OnlineCompiler() {
     const [jobId, setJobId] = useState(null);
     const [status, setStatus] = useState(null);
     const [jobDetails, setJobDetails] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         setCode(stubs[language]);
@@ -68,13 +74,14 @@ function OnlineCompiler() {
             language,
             code,
             input,
-            // probID: "61c481c193e6be53a096f17c",
+            probID: params.id,
         };
         try {
             setOutput("");
             setStatus(null);
             setJobId(null);
             setJobDetails(null);
+            setIsLoading(true);
             const {data} = await axios.post("http://localhost:8000/api/compiler/run", payload);
             if (data.jobId) {
                 setJobId(data.jobId);
@@ -98,15 +105,18 @@ function OnlineCompiler() {
                             ? setOutput(jobOutput.substring(1, jobOutput.length - 1).replaceAll(/\\n/g, "\n"))
                             : setOutput(jobOutput);
                         clearInterval(pollInterval);
+                        setIsLoading(false);
                     } else {
                         console.error(error);
                         setOutput(error);
                         setStatus("Bad request");
                         clearInterval(pollInterval);
+                        setIsLoading(false);
                     }
                 }, 1000);
             } else {
                 setOutput("Retry again.");
+                setIsLoading(false);
             }
         } catch ({response}) {
             if (response) {
@@ -115,6 +125,7 @@ function OnlineCompiler() {
             } else {
                 setOutput("Please retry submitting.");
             }
+            setIsLoading(false);
         }
     };
 
@@ -155,6 +166,12 @@ function OnlineCompiler() {
                 }}>
                 Online Compiler
             </Typography>
+            <Backdrop
+                sx={{color: "#fff", zIndex: theme => theme.zIndex.drawer + 1}}
+                open={isLoading}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Box sx={{flexGrow: 1}}>
                 <Grid container spacing="0.2vh">
                     <Grid item xs={12} sm={7}>

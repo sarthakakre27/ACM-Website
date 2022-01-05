@@ -11,7 +11,7 @@ const runCode = async (req, res) => {
     if (code === undefined) {
         return res.status(400).json({success: false, error: "Empty code body!"});
     }
-    const {filepath, folderPath} = await generateFile(language, code, input);
+    const {filepath} = await generateFile(language, code, input);
     const job = await new Job({language, filepath, input, probID}).save();
     const jobId = job["_id"];
     addJobToQueue(jobId);

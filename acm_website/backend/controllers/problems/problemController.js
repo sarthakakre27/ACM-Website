@@ -12,9 +12,10 @@ const getProblemName = async (req, res) => {
 };
 
 const getProblemDetails = async (req, res) => {
+    console.log(req.params.id);
     try {
         const problem = await Problem.find({
-            user_id: req.params.id,
+            _id: mongoose.Types.ObjectId(req.params.id),
         });
         res.json(problem);
     } catch (err) {
