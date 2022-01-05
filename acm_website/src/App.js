@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import RoutesList from "./Components/RoutesList";//check
 
 import './App.css';
 
@@ -12,7 +13,8 @@ import ProblemList from './Components/ProblemList';
 function App() {
 
 	return (
-		<Router>   
+		//embed RouterList
+		<Router>
 			<div className="app">
 				<Switch>
 					<Router path="/compiler">
