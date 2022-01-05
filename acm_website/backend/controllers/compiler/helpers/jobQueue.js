@@ -14,7 +14,6 @@ const NUM_WORKERS = 5;
 const DEFAULT_MEM_LIMIT = 70000000; // 700MB by default, unless overruled by problem
 
 jobQueue.process(NUM_WORKERS, async ({data}) => {
-    console.log("called executor...");
     const jobId = data.id;
     const job = await Job.findById(jobId);
     const outputPath = path.join(__dirname, "outputs");
@@ -22,12 +21,12 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
     let execTime = 0;
     let output = "";
     let isIncorrect = false;
+    const folderPath = path.dirname(job.filepath).split(".")[0];
 
     if (job === undefined) {
         throw Error(`cannot find Job with id ${jobId}`);
     }
     try {
-        const folderPath = path.dirname(job.filepath).split(".")[0];
         if (job.probID != undefined) {
             const problem = await Problem.findById(mongoose.Types.ObjectId(job.probID));
             for (let i = 0; i < problem.testCases.length; i++) {
@@ -35,7 +34,8 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
                     job.filepath,
                     problem.testCases[i].input,
                     job.language,
-                    problem.constraints.memLim == undefined ? DEFAULT_MEM_LIMIT : problem.constraints.memLim
+                    problem.constraints.memLim == undefined ? DEFAULT_MEM_LIMIT : problem.constraints.memLim,
+                    "TEST_CASE_CHECK"
                 );
 
                 if (op.result === problem.testCases[i].output && op.execTime <= problem.constraints.timLim) {
@@ -57,10 +57,15 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
                 //set flag for this problem in account wide progress array
             }
         } else {
-            execOutput = await executeCode(job.filepath, job.input, job.language, DEFAULT_MEM_LIMIT);
+            execOutput = await executeCode(
+                job.filepath,
+                job.input,
+                job.language,
+                DEFAULT_MEM_LIMIT,
+                "NORMAL_EXECUTION"
+            );
             output = execOutput.result;
             execTime = execOutput.execTime;
-            console.log(execTime);
         }
 
         job["output"] = output;
@@ -69,8 +74,8 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
 
         await job.save();
 
-        fs.unlinkSync(job.filepath); //delete the code file on the server
-        fs.unlinkSync(path.join(path.dirname(job.filepath), "inputFile"));
+        // fs.unlinkSync(job.filepath); //delete the code file on the server
+        // fs.unlinkSync(path.join(path.dirname(job.filepath), "inputFile"));
         fs.rmSync(folderPath, {recursive: true, force: true});
 
         if (job.language === "cpp" || job.language === "c") {
@@ -81,13 +86,11 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
 
         return true;
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         job["output"] = JSON.stringify(err);
         job["status"] = "error";
         await job.save();
 
-        fs.unlinkSync(job.filepath); //delete the code file on the server
-        fs.unlinkSync(path.join(path.dirname(job.filepath), "inputFile"));
         fs.rmSync(folderPath, {recursive: true, force: true});
 
         throw Error(JSON.stringify(err));
