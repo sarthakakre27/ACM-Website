@@ -32,7 +32,7 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
             for (let i = 0; i < problem.testCases.length; i++) {
                 let op = await executeCode(
                     job.filepath,
-                    problem.testCases[i].input,
+                    problem.testCases,
                     job.language,
                     problem.constraints.memLim == undefined ? DEFAULT_MEM_LIMIT : problem.constraints.memLim,
                     "TEST_CASE_CHECK"

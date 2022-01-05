@@ -6,19 +6,19 @@ const os = require("os");
 const timeout = 10000;
 
 const executeCode = (filepath, input, language, memory, purpose) => {
+    const outputPath = path.dirname(filepath).split(".")[0];
+    const jobId = path.basename(filepath).split(".")[0];
+    const dirUsercode = path.join(path.resolve(__dirname, "../../../"), `temp/${jobId}`);
+    let memoryLimit = memory;
+    let Data = "";
+
+    const inputFileMaker = async (dirUsercode, input, name) => {
+        await fs.writeFileSync(path.join(dirUsercode, `${name}`), input);
+    };
+
     if (purpose === "NORMAL_EXECUTION") {
         return new Promise((resolve, reject) => {
-            const outputPath = path.dirname(filepath).split(".")[0];
-            const jobId = path.basename(filepath).split(".")[0];
-
-            const dirUsercode = path.join(path.resolve(__dirname, "../../../"), `temp/${jobId}`);
-            const inputFileMaker = async (dirUsercode, input) => {
-                await fs.writeFileSync(path.join(dirUsercode, "inputFile"), input);
-            };
-            inputFileMaker(dirUsercode, input);
-
-            let memoryLimit = memory;
-            let Data = "";
+            inputFileMaker(dirUsercode, input, "inputFile");
 
             if (input[-1] !== "\n") {
                 input += "\n";
@@ -87,9 +87,47 @@ const executeCode = (filepath, input, language, memory, purpose) => {
             });
         });
     } else if (purpose == "TEST_CASE_CHECK") {
-        console.log("Work inProgerss");
         return new Promise((resolve, reject) => {
-            reject("Work inProgerss");
+            //Probelm in Script file Please check
+            console.log("Work inProgerss");
+
+            input.forEach((element, key) => {
+                console.log(key);
+                const particularInput = element.input;
+                inputFileMaker(dirUsercode, particularInput, `inputFile${key}`);
+            });
+
+            const commands = {
+                py: [`"${outputPath}":/code compiler_image /bin/bash -c '../CodeRunner.sh'`],
+            };
+
+            const dockerScriptPath = path.join(__dirname, "./dockerRun.sh");
+
+            const childProcess = spawn(dockerScriptPath, commands[language], {
+                shell: "/bin/bash",
+                timeout: timeout,
+                detached: true,
+            });
+
+            // childProcess.stdin.write(`${input}`);
+
+            childProcess.stdout.on("data", data => {
+                // console.log("in stdout");
+                // console.log(`${data}`);
+                Data += data;
+            });
+
+            childProcess.stderr.on("data", data => {
+                // console.log("in stderr");
+                // console.log(`${data}`);
+                Data += data.toString();
+            });
+
+            childProcess.on("close", data => {
+                console.log("Process Closed with code" + ": " + `${data}`);
+                console.log(Data);
+                resolve(Data);
+            });
         });
     }
 };
