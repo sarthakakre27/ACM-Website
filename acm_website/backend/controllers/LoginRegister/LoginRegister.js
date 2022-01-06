@@ -1,4 +1,4 @@
-const {User} = require("../../Models/User");
+const {User} = require("../../models/userModel");
 const passport = require("passport");
 
 const register = (req, res) => {

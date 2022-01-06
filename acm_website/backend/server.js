@@ -25,7 +25,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 // app.use(express.static("public"));//check needed
 
-const {User} = require("./Models/User");
+const {User} = require("./models/userModel");
 const problem_router = require("./routes/problemRouter");
 const compiler_router = require("./routes/compilerRouter");
 const auth_router = require("./routes/LoginRegister");
@@ -45,4 +45,4 @@ app.post("/api/login", passport.authenticate("local"), (req, res) => {
     res.end();
 });
 app.use("/api", auth_router);
-app.listen(PORT, () => console.log(`Server Started ${PORT}`));
+app.listen(PORT, () => console.log(`Server Started ${PORT} `));
