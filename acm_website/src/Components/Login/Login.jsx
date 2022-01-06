@@ -21,19 +21,19 @@ const LoginBox = props => {
 
     useEffect(() => {
         axios
-            .get("http://localhost:8000/api/verify", {
+            .get("/api/verify", {
                 headers: {
                     "content-type": "application/json",
                 },
             })
             .then(res => {
                 const userName = res.data;
-                window.location.href = "/" + userName;
+                window.location.href = "/home" ;
             })
             .catch(err => {
                 console.log(err);
             });
-    });
+    },[]);
 
     const handleSubmit = event => {
         event.preventDefault();
@@ -43,14 +43,14 @@ const LoginBox = props => {
         });
 
         axios
-            .post("http://localhost:8000/api/login", params, {
+            .post("/api/login", params, {
                 headers: {
                     "content-type": "application/json",
                 },
             })
             .then(res => {
                 // Login successful
-                window.location.href = "/" + username;
+                window.location.href = "/home";
             })
             .catch(err => setOpenAlert(true));
     };
