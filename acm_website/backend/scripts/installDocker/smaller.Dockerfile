@@ -15,3 +15,4 @@ RUN pip3 install --no-cache --upgrade pip setuptools
 
 # Install Java 
 RUN apk --no-cache add openjdk11
+RUN apk add sed
