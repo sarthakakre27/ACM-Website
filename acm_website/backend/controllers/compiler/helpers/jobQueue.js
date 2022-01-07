@@ -29,23 +29,22 @@ jobQueue.process(NUM_WORKERS, async ({data}) => {
     try {
         if (job.probID != undefined) {
             const problem = await Problem.findById(mongoose.Types.ObjectId(job.probID));
+            let op = await executeCode(
+                job.filepath,
+                problem.testCases,
+                job.language,
+                problem.constraints.memLim == undefined ? DEFAULT_MEM_LIMIT : problem.constraints.memLim,
+                "TEST_CASE_CHECK"
+            );
             for (let i = 0; i < problem.testCases.length; i++) {
-                let op = await executeCode(
-                    job.filepath,
-                    problem.testCases,
-                    job.language,
-                    problem.constraints.memLim == undefined ? DEFAULT_MEM_LIMIT : problem.constraints.memLim,
-                    "TEST_CASE_CHECK"
-                );
-
-                if (op.result === problem.testCases[i].output && op.execTime <= problem.constraints.timLim) {
-                    execTime += op.execTime;
+                if (op.result[i] === problem.testCases[i].output && op.execTime[i] <= problem.constraints.timLim) {
+                    execTime += op.execTime[i];
                     // output += `test case ${i} PASSED\n`;//not necessary to show
                 } else {
                     console.log(op.execTime, problem.constraints.timLim);
                     output += `test case ${i} FAILED\n\n`;
-                    output += `your output : ${op.result}\ncorrect output : ${problem.testCases[i].output}\n`;
-                    output += `\nIf the Output is correct you have not met the Time constrains, \nexecution time of your code is : ${op.execTime} ms\n\n`;
+                    output += `your output : ${op.result[i]}\ncorrect output : ${problem.testCases[i].output}\n`;
+                    output += `\nIf the Output is correct you have not met the Time constrains, \nexecution time of your code is : ${op.execTime[i]} ms\n\n`;
                     isIncorrect = true;
                     break;
                 }
