@@ -42,9 +42,6 @@ const executeCode = (filepath, input, language, memory, purpose) => {
                 js: [
                     `"${outputPath}":/code compiler_image /bin/bash -c 'cd /code && ulimit -Sv ${memoryLimit} &&  time  node ${jobId}.js -< $"/code/inputFile"'`,
                 ],
-                testCaseCheck: [
-                    `"${outputPath}":/code compiler_image /bin/bash -c 'cd /code && ./CodeRunner.sh ${counter} ${language} ${memoryLimit}'`,
-                ],
             };
 
             const dockerScriptPath = path.join(__dirname, "./dockerRun.sh");
