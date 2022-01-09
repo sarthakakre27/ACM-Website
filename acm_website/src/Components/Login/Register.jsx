@@ -33,7 +33,7 @@ const RegisterBox = props => {
             });
 
             axios
-                .post("http://localhost:8000/api/register", params, {
+                .post("/api/register", params, {
                     headers: {
                         "content-type": "application/json",
                     },
