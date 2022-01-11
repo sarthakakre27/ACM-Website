@@ -11,7 +11,7 @@ app.use(express.urlencoded({extended: true}));
 
 // app.use(express.static("public"));//check needed
 
-const {User} = require("./Models/User");
+const {User} = require("./models/userModel");
 const problem_router = require("./routes/problemRouter");
 const compiler_router = require("./routes/compilerRouter");
 const auth_router = require("./routes/LoginRegister");
@@ -24,4 +24,4 @@ db.once("open", () => console.log("Connected to Database"));
 app.use("/api/problems", problem_router);
 app.use("/api/compiler", compiler_router);
 app.use("/api", auth_router);
-app.listen(PORT, () => console.log(`Server Started ${PORT}`));
+app.listen(PORT, () => console.log(`Server Started ${PORT} `));

@@ -4,7 +4,7 @@ const ProblemSchema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-        maxLength: [120, 'too big name'],
+        maxLength: [120, "too big name"],
     },
     statement: {
         type: String,
@@ -28,23 +28,24 @@ const ProblemSchema = mongoose.Schema({
         },
         memLim: {
             type: Number,
-        }
+        },
     },
     testCases: {
-        type: [{
-            input: {
-                type: String,
-                required: true,
+        type: [
+            {
+                input: {
+                    type: String,
+                    required: true,
+                },
+                output: {
+                    type: String,
+                    required: true,
+                },
+                _id: {id: false},
             },
-            output: {
-                type: String,
-                required: true,
-            },
-        }],
+        ],
         required: true,
-    }
-
+    },
 });
 
-
-module.exports = mongoose.model("problem",ProblemSchema);
+module.exports = mongoose.model("problem", ProblemSchema);
