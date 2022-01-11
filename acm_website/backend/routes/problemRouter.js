@@ -6,9 +6,9 @@ const {getProblemDetails, getProblemName} = require(problemController);
 
 const auth = require("../middleware/auth");
 
-router.get("/get-problems", getProblemName);
+router.get("/get-problems", auth,  getProblemName);
 
-router.get("/problem-details/:id", getProblemDetails);
+router.get("/problem-details/:id", auth, getProblemDetails);
 
 // post a question
 
