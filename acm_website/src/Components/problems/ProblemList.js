@@ -1,15 +1,23 @@
 import React, {useState, useEffect} from "react";
-
+import axios from "axios";
 import {Link} from "react-router-dom";
 
 function ProblemList() {
     const [list, setList] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:8000/api/problems/get-problems")
-            .then(response => response.json())
-            .then(data => {
-                setList(data);
+        // Send access token through authorization header
+        let accessToken = localStorage.getItem("accessToken");
+        let requestOptions = null;
+
+        if (accessToken) {
+            requestOptions = {headers: {authorization: `Bearer ${accessToken}`}};
+            JSON.stringify(requestOptions);
+        }
+
+        axios.get("/api/problems/get-problems", requestOptions)
+            .then(res => {
+                setList(res.data);
             })
             .catch(err => console.log(err));
     }, []);

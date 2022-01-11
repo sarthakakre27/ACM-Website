@@ -20,20 +20,25 @@ const LoginBox = props => {
     };
 
     useEffect(() => {
+        // Send access token through authorization header
+        let accessToken = localStorage.getItem("accessToken");
+        let requestOptions = null;
+
+        if (accessToken) {
+            requestOptions = {headers: {authorization: `Bearer ${accessToken}`}};
+            JSON.stringify(requestOptions);
+        }
+
         axios
-            .get("/api/verify", {
-                headers: {
-                    "content-type": "application/json",
-                },
-            })
+            .get("/api/verify", requestOptions)
             .then(res => {
                 const userName = res.data;
-                window.location.href = "/home" ;
+                window.location.href = "/home";
             })
             .catch(err => {
                 console.log(err);
             });
-    },[]);
+    }, []);
 
     const handleSubmit = event => {
         event.preventDefault();
@@ -50,10 +55,13 @@ const LoginBox = props => {
             })
             .then(res => {
                 // Login successful
+								localStorage.setItem("accessToken", res.data.accessToken);
                 window.location.href = "/home";
             })
             .catch(err => setOpenAlert(true));
     };
+
+
 
     return (
         <div className="LoginBox">
