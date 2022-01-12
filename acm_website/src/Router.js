@@ -6,6 +6,7 @@ import ProblemDetails from "./Components/problems/ProblemDetails";
 import ProblemList from "./Components/problems/ProblemList";
 import LoginPage from "./Components/Login/LoginPage";
 import Home from "./Components/Login/Home";
+import PrivateRoute from "./Components/auth/PrivateRoute";
 
 function SiteRouter() {
     return (
@@ -13,7 +14,15 @@ function SiteRouter() {
             <Routes>
                 <Route path="/" exact element={<Cover />} />
                 <Route path="/login" exact element={<LoginPage />} />
-                <Route path="/home" exact element={<Home />} />
+                <Route
+                    path="/home"
+                    exact
+                    element={
+                        <PrivateRoute>
+                            <Home />
+                        </PrivateRoute>
+                    }
+                />
                 <Route path="/problem-details/:id" exact element={<ProblemDetails />} />
                 <Route path="/problem-list" exact element={<ProblemList />} />
                 <Route path="/compiler" exact element={<OnlineCompiler />} />

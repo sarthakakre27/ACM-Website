@@ -6,8 +6,10 @@ import TextField from "@mui/material/TextField";
 import axios from "axios";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import {useNavigate} from "react-router-dom";
 
 const LoginBox = props => {
+    const Navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [openAlert, setOpenAlert] = useState(false);
@@ -20,24 +22,16 @@ const LoginBox = props => {
     };
 
     useEffect(() => {
-        // Send access token through authorization header
-        let accessToken = localStorage.getItem("accessToken");
-        let requestOptions = null;
-
-        if (accessToken) {
-            requestOptions = {headers: {authorization: `Bearer ${accessToken}`}};
-            JSON.stringify(requestOptions);
+        if (localStorage.getItem("accessToken") !== null) {
+            axios
+                .get("/api/verify")
+                .then(res => {
+                    Navigate("/home");
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
-
-        axios
-            .get("/api/verify", requestOptions)
-            .then(res => {
-                const userName = res.data;
-                window.location.href = "/home";
-            })
-            .catch(err => {
-                console.log(err);
-            });
     }, []);
 
     const handleSubmit = event => {
@@ -48,20 +42,14 @@ const LoginBox = props => {
         });
 
         axios
-            .post("/api/login", params, {
-                headers: {
-                    "content-type": "application/json",
-                },
-            })
+            .post("/api/login", params)
             .then(res => {
                 // Login successful
-								localStorage.setItem("accessToken", res.data.accessToken);
+                localStorage.setItem("accessToken", res.data.accessToken);
                 window.location.href = "/home";
             })
             .catch(err => setOpenAlert(true));
     };
-
-
 
     return (
         <div className="LoginBox">

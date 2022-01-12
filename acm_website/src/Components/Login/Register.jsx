@@ -33,11 +33,7 @@ const RegisterBox = props => {
             });
 
             axios
-                .post("/api/register", params, {
-                    headers: {
-                        "content-type": "application/json",
-                    },
-                })
+                .post("/api/register", params)
                 .then(res => props.login())
                 .catch(err => {
                     console.error(err);

@@ -173,6 +173,7 @@ const login = (req, res) => {
         } else {
             if (foundUser) {
                 // Compare password
+                // console.log(foundUser);
                 bcrypt.compare(password, foundUser.password, (err_cmp, result) => {
                     if (err_cmp) {
                         console.error(err_cmp);
@@ -193,6 +194,7 @@ const login = (req, res) => {
 };
 
 const verify = (req, res) => {
+    // console.log("Here here");
     res.send(req.currentUserName);
 };
 

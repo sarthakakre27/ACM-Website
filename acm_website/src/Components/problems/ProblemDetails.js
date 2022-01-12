@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
+import axios from "axios";
 import OnlineCompiler from "../online-compiler/OnlineCompiler";
 
 function ProblemDetails(props) {
@@ -8,11 +9,11 @@ function ProblemDetails(props) {
     const [details, setDetails] = useState({});
 
     useEffect(() => {
-        fetch(`http://localhost:8000/api/problems/problem-details/${params.id}`)
-            .then(response => response.json())
-            .then(data => {
-                setDetails(data);
-                console.log(data);
+        axios
+            .get(`/api/problems/problem-details/${params.id}`)
+            .then(response => {
+                setDetails(response.data);
+                console.log(response.data);
             })
             .catch(err => console.log(err));
     }, [params.id]);
