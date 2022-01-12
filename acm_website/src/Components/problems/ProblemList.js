@@ -7,16 +7,10 @@ function ProblemList() {
 
     useEffect(() => {
         // Send access token through authorization header
-        let accessToken = localStorage.getItem("accessToken");
-        let requestOptions = null;
-
-        if (accessToken) {
-            requestOptions = {headers: {authorization: `Bearer ${accessToken}`}};
-            JSON.stringify(requestOptions);
-        }
-
-        axios.get("/api/problems/get-problems", requestOptions)
+        axios
+            .get("/api/problems/get-problems")
             .then(res => {
+                console.log(res);
                 setList(res.data);
             })
             .catch(err => console.log(err));

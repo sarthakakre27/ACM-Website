@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const saltRounds = parseInt(process.env.SALT_ROUNDS) || 10;
-const {User} = require("../../Models/User");
+const {User} = require("../../models/userModel");
 const crypto = require("crypto");
 const PASSWORD_LENGTH = 18;
 const LOWERCASE_ALPHABET = "abcdefghijklmnopqrstuvwxyz"; // 26 chars
@@ -145,7 +145,7 @@ const forgotPassword = (req, res) => {
                                     console.log("Error Occurs");
                                 } else {
                                     console.log("Email sent successfully");
-																		res.status(200).send("Email sent successfully");
+                                    res.status(200).send("Email sent successfully");
                                 }
                             });
                         }
@@ -173,6 +173,7 @@ const login = (req, res) => {
         } else {
             if (foundUser) {
                 // Compare password
+                // console.log(foundUser);
                 bcrypt.compare(password, foundUser.password, (err_cmp, result) => {
                     if (err_cmp) {
                         console.error(err_cmp);
@@ -193,6 +194,7 @@ const login = (req, res) => {
 };
 
 const verify = (req, res) => {
+    // console.log("Here here");
     res.send(req.currentUserName);
 };
 
@@ -201,5 +203,5 @@ module.exports = {
     verify,
     login,
     resetPassword,
-		forgotPassword
+    forgotPassword,
 };
