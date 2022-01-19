@@ -1,0 +1,135 @@
+/* The code above is the CSS for the page. */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital@1&display=swap');
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+iframe {
+  border: none;
+}
+
+.output {
+  height: 100vh;
+  overflow-y: visible;
+  background-color: #FFFFFF !important;
+}
+
+.FullScreenToggle {
+  top: 5px;
+  right: 5px;
+  float: right;
+  margin-left: 5px !important;
+}
+
+.CodeMirror {
+  height: 100vh !important;
+}
+
+.codeMode {
+  top: 5px;
+  left: 10px;
+  margin-left: 5px !important;
+}
+
+.codeInput {
+  height: 100%;
+  margin-top: 10px;
+}
+
+.LoginBox {
+  padding: 10% 10%;
+  width: 300px;
+  height: 350px;
+  color: #EEEEEE;
+}
+
+.LoginBox h3 {
+  color: #0288d1 !important;
+}
+
+.RegisterBox {
+  padding: 10% 10%;
+  width: 300px;
+  height: 350px;
+  color: #EEEEEE;
+  margin-bottom: 10%;
+}
+
+.RegisterBox h3 {
+  color: #0288d1 !important;
+}
+
+button {
+  border: 1px solid #0288d1 !important;
+  color: #EEEEEE !important;
+  background-color: #0288d1 !important;
+}
+
+.codeMode-inactive{
+    top: 5px;
+  left: 10px;
+  margin-left: 5px !important;
+     border: 1px solid #0288d1 !important;
+  color: #EEEEEE !important;
+  background-color: #0288d1 !important;
+}
+
+.codeMode-active{
+    top: 5px;
+  left: 10px;
+  margin-left: 5px !important;
+    border: 1px solid #0288d1 !important;
+  color: #0288d1 !important;
+  background-color:  #EEEEEE !important;
+}
+
+footer {
+  text-align: center;
+  bottom: 0;
+  height: 50px;
+  width: 98.5vw;
+}
+
+@media (max-width: 768px) {
+  footer{
+    padding-top: 120px;
+
+  }
+}
+
+
+p a {
+  text-decoration: none;
+  color: #0288d1 !important;
+}
+
+.Navbar h1 {
+  padding-left: 3%;
+  font-weight: 900;
+  flex-grow: 1;
+  font-family: 'Poppins', sans-serif;
+}
+
+.Navbar {
+  color: #EEEEEE;
+}
+
+.Description {
+  padding: 10% 10%;
+  height: 64vh;
+  font-size: 24px;
+}
+
+.DisplayCards {
+  margin: auto;
+  width: 60%;
+  margin-top: 10%;
+}
+
+a:-webkit-any-link {
+  color: white !important;
+}
+
