@@ -91,6 +91,7 @@ const resetPassword = (req, res) => {
                             res.status(400).send("Incorrect password");
                         } else {
                             User.updateOne({username: req.body.username}, {password: hashPassword}, err_update => {
+                                //
                                 if (err_update) {
                                     console.error(err_update);
                                     res.status(500).send("Internal server error");
@@ -113,11 +114,11 @@ const forgotPassword = (req, res) => {
             res.status(500).send("Internal server error");
         } else if (user) {
             const nodemailer = require("nodemailer");
-
+            console.log("user found");
             const mailTransporter = nodemailer.createTransport({
                 service: "gmail",
                 auth: {
-                    user: "proclubvnit@gmail.com",
+                    user: "proclub@gmail.com",
                     pass: process.env.GMAIL_PASSWORD,
                 },
             });
@@ -134,15 +135,16 @@ const forgotPassword = (req, res) => {
                             res.status(500).send("Internal server error");
                         } else {
                             const mailDetails = {
-                                from: "proclubvnit@gmail.com",
+                                from: "covid19vaccinetrack@gmail.com",
                                 to: user.email,
                                 subject: "Reset Password - ACM VNIT",
-                                text: `Hey!, ${password} is your new password`,
+                                text: `Hey!,\n ${password} \nis your new password`,
                             };
 
                             mailTransporter.sendMail(mailDetails, (err, data) => {
                                 if (err) {
                                     console.log("Error Occurs");
+                                    console.log(err);
                                 } else {
                                     console.log("Email sent successfully");
                                     res.status(200).send("Email sent successfully");

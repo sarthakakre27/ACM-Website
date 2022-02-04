@@ -9,6 +9,6 @@ router.post("/login", login);
 router.get("/verify", auth, verify);
 // features added
 router.post("/resetPassword", auth, resetPassword); // write code in frontend
-router.post("/forgotPassword", auth, forgotPassword); // write code in frontend
+router.post("/forgotPassword", forgotPassword); // write code in frontend
 
 module.exports = router;

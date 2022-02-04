@@ -1,37 +1,50 @@
 
 const project = require('../../models/projectModel');
+//error handling + async functions needed.
 
 const getProject = (req, res) => {
+  try {
     project.findOne({
       _id: req.params.id
     }, (err, data) => {
       if (err) throw err;
-      if(req.currentUserName === data.owner) {
+      if (req.currentUserName === data.owner) {
         res.send(data);
       }
       else {
         res.sendStatus(403);
       }
     })
-  };
-  
+  } catch (err) {
+    console.log("could not find project");
+    console.log(err);
+    res.sendStatus(404);
+  }
+};
+
 const getAllProjects = (req, res) => {
-    if(req.currentUserName){
+  try {
+    if (req.currentUserName) {
       project.find({
         owner: req.currentUserName
       }, (err, data) => {
         if (err) throw err
         res.send(data);
       })
-    }else{
-      console.log("no");
+    } else {
+      console.log("no user set");
       res.sendStatus(403);
     }
-  };
-  
+  } catch (err) {
+    console.log("could not get all projects");
+    console.log(err);
+    res.sendStatus(403);
+  }
+};
+
 //   app.post('/api/userValidation', verifyToken, (req, res) => {
 //     const userName = req.user.data.id;
-  
+
 //     if (req.user.data.id) {
 //       const token = generateToken({
 //         id: userName
@@ -42,11 +55,11 @@ const getAllProjects = (req, res) => {
 //       });
 //     }
 //   })
-  
-  const newProject = (req, res) => {
-    const username = req.currentUserName;
-    const name = req.body.name;
-  
+
+const newProject = (req, res) => {
+  const username = req.currentUserName;
+  const name = req.body.name;
+  try {
     const newProject = new project({
       html: "",
       css: "",
@@ -64,9 +77,15 @@ const getAllProjects = (req, res) => {
         });
       }
     });
+  } catch (err) {
+    console.log("could not create new project");
+    console.log(err);
+    res.sendStatus(500);
   }
-  
+}
+
 const saveProject = (req, res) => {
+  try {
     project.findByIdAndUpdate(req.body.id, {
       html: req.body.html,
       css: req.body.css,
@@ -77,22 +96,33 @@ const saveProject = (req, res) => {
     res.send({
       message: "Successfully saved"
     });
+  } catch (err) {
+    console.log("could not save project");
+    console.log(err);
+    res.sendStatus(500);
   }
-  
- const deleteProject= (req, res) => {
+}
+
+const deleteProject = (req, res) => {
+  try {
     project.findByIdAndDelete(req.body.id, (err, result) => {
       if (err) throw err;
     })
     res.send({
       message: "Successfully deleted"
     });
+  } catch (err) {
+    console.log("could not delete project");
+    console.log(err);
+    res.sendStatus(500);
   }
-  
+}
 
-  module.exports = {
-    getProject,
-    getAllProjects,
-    newProject,
-    saveProject,
-    deleteProject
-    }
+
+module.exports = {
+  getProject,
+  getAllProjects,
+  newProject,
+  saveProject,
+  deleteProject
+}
